@@ -154,7 +154,7 @@ public class ManageNetwork : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         PhotonNetwork.Instantiate("VanGuard", _spawn[0].transform.position, Quaternion.identity, 0);
-        UiManager.instance.HidePainel(9, false);
+        UiManager.instance.PainelRoom.SetActive(false);
     }
 
     public void JoinRandom()

@@ -5,20 +5,24 @@ using UnityEngine.UI;
 
 public class PainelConfig : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private Camera _cameraMain, _cameraAuxi;
     [SerializeField] private Button _startGameBtn, _buttonSpawn;
     [SerializeField] private Button _joinRandomBtn;
-    [SerializeField] private InputField _inputNameRoom;
-    [SerializeField] private Dropdown _dropmaxPlayer, _modeMatch, _typeWeapon, _publicOrPrivate, _groupSet;
-    [SerializeField] private Text _infoFinalRoom;
-    [SerializeField] private Sprite[] _rooms = new Sprite[0];
-    [SerializeField] private Transform[] _spawnGrupo = new Transform[0];
-    [SerializeField] private Image _imgRoom;
-    [SerializeField] private Text[] _msgInfo;
+    [Space(10)]
 
-    public int GroupA = 9;
-    public int GroupB = 19;
-    public GameObject[] Painels = new GameObject[0];
+    [SerializeField] private InputField _inputNameRoom;
+    [SerializeField] private Dropdown _dropmaxPlayer, _publicOrPrivate, _groupSet;
+    [Space(10)]
+
+    [SerializeField] private Text _infoFinalRoom;
+    [SerializeField] private Text[] _msgInfo;
+    [Space(10)]
+
+    [SerializeField] private Image _imgRoom;
+    [Space(10)]
+
+    [SerializeField] private Sprite[] _rooms = new Sprite[0];
+    [Space(10)]
+
     public Slider SliderTimer;
     public InputField MensagensEnvio;
     public bool Exit = false;
@@ -27,26 +31,24 @@ public class PainelConfig : MonoBehaviourPunCallbacks
     public Text Municao;
     public Image IconeWeapon;
     public Text RoomText, NameRooms;
+    [Space(10)]
+
+    [SerializeField] private int _groupA = 9;
+    [SerializeField] private int _groupB = 19;
+
+    //-----------------------------------
 
     private float _time = 0f;
     private float _timeTwo = 0;
     private float _timeTree = 0;
     private float _timeFour = 0;
     private int _numbRooms = 0;
-    private int _randEsc;
-
     private bool _kill = false;
     private bool _playerConect = false;
     private bool _dead = false;
     private bool _spawnTimer = false;
-
     private byte _maxPlay = 0;
     private string _publi;
-
-    private PlayerHealth _playerHealth;
-    private GameObject[] _posCamera;
-    private GameObject _adversInNetwork;
-
 
     private void Start()
     {
@@ -76,80 +78,31 @@ public class PainelConfig : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connectado ao Servidor.");
+
         PhotonNetwork.JoinLobby(TypedLobby.Default);
         _startGameBtn.interactable = true;
         _joinRandomBtn.interactable = true;
     }
 
-    public void InstanciarNaSala()
+    public void SpawnInRoom()
     {
-        GameObject player = (PhotonNetwork.Instantiate(UiManager.instance._personagemSeted, _spawnGrupo[_randEsc].transform.position, Quaternion.identity, 0));
-
-        PlayerHealth pp = player.GetComponent<PlayerHealth>();
-        pp.HealthSlider = Painels[5].GetComponent<Slider>();
-        pp.DanoImage = Painels[6].GetComponent<Image>();
-        pp.municao = Municao.GetComponent<Text>();
-        Painels[0].gameObject.SetActive(false);
-
-        PlayerMove pm = player.GetComponent<PlayerMove>();
-        CameraVisao.instance.Cabeça[0] = pm.Referencias[1].gameObject;
-        CameraVisao.instance.Cabeça[1] = pm.Referencias[2].gameObject;
-        CameraVisao.instance.pos[0] = pm.Referencias[3].gameObject;
-        CameraVisao.instance.pos[1] = pm.Referencias[4].gameObject;
-
-        CamAuxio.instance.visaoT = pm.Referencias[0].gameObject;
-        CamAuxio.instance.CabecaM = pm.Referencias[5].gameObject;
-
-
-        _cameraMain.enabled = true;
-        CameraVisao.instance.enabled = true;
-        CamAuxio.instance.enabled = true;
-        Painels[9].gameObject.SetActive(false);
+        GameManager.instance.SpawnPlayer();
     }
 
     public override void OnJoinedRoom()
     {
-        Painels[1].gameObject.SetActive(false);
-        Painels[9].gameObject.SetActive(true);
+        UiManager.instance.JoinedRoomApply();
     }
 
     public void LeaveRoom()
     {
-        Painels[1].gameObject.SetActive(true);
-        Painels[9].gameObject.SetActive(false);
-        CameraVisao.instance.enabled = false;
-        _cameraMain.transform.SetParent(Painels[7].transform, false);
-        CamAuxio.instance.enabled = false;
-        _cameraAuxi.transform.SetParent(Painels[7].transform, false);
-        _cameraAuxi.gameObject.SetActive(true);
-        PhotonNetwork.LeaveRoom();
+        UiManager.instance.LeaveRoomApply();
     }
 
-    public void SpawnarDenovo()
+    public void RespawnPlayer()
     {
-        UiManager.instance.HidePainel(9, true);
-
-        GameObject player = (PhotonNetwork.Instantiate(UiManager.instance._personagemSeted, _spawnGrupo[_randEsc].transform.position, Quaternion.identity, 0));
-        PlayerHealth pp = player.GetComponent<PlayerHealth>();
-        pp.HealthSlider = Painels[5].GetComponent<Slider>();
-        pp.DanoImage = Painels[6].GetComponent<Image>();
-        pp.municao = Municao.GetComponent<Text>();
-        Painels[0].gameObject.SetActive(false);
-
-        PlayerMove pm = player.GetComponent<PlayerMove>();
-        CameraVisao.instance.Cabeça[0] = pm.Referencias[1].gameObject;
-        CameraVisao.instance.Cabeça[1] = pm.Referencias[2].gameObject;
-        CameraVisao.instance.pos[0] = pm.Referencias[3].gameObject;
-        CameraVisao.instance.pos[1] = pm.Referencias[4].gameObject;
-
-        CamAuxio.instance.visaoT = pm.Referencias[0].gameObject;
-        CamAuxio.instance.CabecaM = pm.Referencias[5].gameObject;
-
-        CameraVisao.instance.enabled = true;
-        CamAuxio.instance.enabled = true;
-
-        _buttonSpawn.interactable = false;
-        Painels[8].gameObject.SetActive(false);
+        UiManager.instance.PainelSpawn.SetActive(true);
+        GameManager.instance.RespawnPlayer();
     }
 
     public override void OnCreatedRoom()
@@ -234,7 +187,6 @@ public class PainelConfig : MonoBehaviourPunCallbacks
 
     public void LeftOrRoom()
     {
-        Painels[3].gameObject.SetActive(false);
         PhotonNetwork.LoadLevel(0);
     }
 
@@ -300,18 +252,19 @@ public class PainelConfig : MonoBehaviourPunCallbacks
             _playerConect = false;
         }
     }
+
     public void Dead()
     {
         _dead = true;
-        UiManager.instance.HidePainel(9, false);
     }
 
     void CronometroDead()
     {
         _timeTree += Time.deltaTime;
+
         if (_timeTree >= 2f)
         {
-            Painels[8].gameObject.SetActive(true);
+            UiManager.instance.PainelSpawn.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             _dead = false;
@@ -375,19 +328,17 @@ public class PainelConfig : MonoBehaviourPunCallbacks
         }
     }
 
-    
-
     private void Groups()
     {
         switch (_groupSet.value)
         {
             case 0:
-                int randA = Random.Range(0, GroupA);
-                _randEsc = randA;
+                int randA = Random.Range(0, _groupA);
+                GameManager.instance.Group = randA;
                 break;
             case 1:
-                int randB = Random.Range(10, GroupB);
-                _randEsc = randB;
+                int randB = Random.Range(10, _groupB);
+                GameManager.instance.Group = randB;
                 break;
         }
     }

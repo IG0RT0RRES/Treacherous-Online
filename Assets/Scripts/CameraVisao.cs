@@ -1,59 +1,68 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraVisao : MonoBehaviour
 {
-    public static CameraVisao instance;
+    [SerializeField] private GameObject[] _head;
+    [SerializeField] private GameObject[] _pos;
+    [SerializeField] private Camera[] _cam;
+    [SerializeField] private int _iD = 0;
 
-    public GameObject[] Cabeça;
-    public GameObject[] pos;
-    public Camera[] cam;
+    private bool Cmenabled = false;
+    private float _v = -2.0f;
+    private float _h = 2.0f;
+    private RaycastHit _hit;
 
-    bool Cmenabled = false;
+    #region Properties
 
-    [SerializeField]
-    private int ID = 0;
-
-    float V = -2.0f, H = 2.0f;
-
-    private RaycastHit hit;
-
-    private void Awake()
+    public GameObject[] Head
     {
-        instance = this;
+        get { return _head; }
     }
 
-    void LateUpdate()
+    public GameObject[] Pos
     {
-        Segue();
-        Rotacao();
+        get { return _pos; }
+    }
+
+    public Camera[] Cam
+    {
+        get { return _cam; }
+    }
+
+    #endregion
+
+    private void LateUpdate()
+    {
+        Follow();
+        Rotation();
+
         if (Input.GetKeyDown(KeyCode.C))
         {
-            if (ID < 1)
+            if (_iD < 1)
             {
-                ID++;
+                _iD++;
             }
-            else if (ID > 0)
+            else if (_iD > 0)
             {
-                ID = 0;
+                _iD = 0;
             }
         }
     }
-    void Segue()
+
+    void Follow()
     {
       
-       transform.LookAt(Cabeça[ID].transform);
+       transform.LookAt(_head[_iD].transform);
 
-       if (!Physics.Linecast(Cabeça[ID].transform.position, pos[ID].transform.position))
+       if (!Physics.Linecast(_head[_iD].transform.position, _pos[_iD].transform.position))
        {
-            transform.position = pos[ID].transform.position;
-            transform.SetParent(pos[ID].transform);
+            transform.position = _pos[_iD].transform.position;
+            transform.SetParent(_pos[_iD].transform);
               
        }
-       else if (Physics.Linecast(Cabeça[ID].transform.position, pos[ID].transform.position, out hit))
+       else if (Physics.Linecast(_head[_iD].transform.position, _pos[_iD].transform.position, out _hit))
        {
-            transform.position = hit.point;
+            transform.position = _hit.point;
        }
 
 
@@ -61,27 +70,27 @@ public class CameraVisao : MonoBehaviour
         {
             if (!Cmenabled)
             {
-                cam[0].enabled = false;
-                pos[2].gameObject.SetActive(false);
-                cam[1].enabled = true;
+                _cam[0].enabled = false;
+                _pos[2].gameObject.SetActive(false);
+                _cam[1].enabled = true;
                 Cmenabled = true;
             }
             else
             {
-                pos[2].gameObject.SetActive(true);
-                cam[1].enabled = false;
-                cam[0].enabled = true;
+                _pos[2].gameObject.SetActive(true);
+                _cam[1].enabled = false;
+                _cam[0].enabled = true;
                 Cmenabled = false;
             }
             
         }
     }
 
-    private void Rotacao()
+    private void Rotation()
     {
-        float Hor = H * Input.GetAxis("Mouse X");
-        float Ver = V * Input.GetAxis("Mouse Y");
+        float Hor = _h * Input.GetAxis("Mouse X");
+        float Ver = _v * Input.GetAxis("Mouse Y");
 
-        Cabeça[ID].transform.Rotate(Ver, 0, 0);
+        _head[_iD].transform.Rotate(Ver, 0, 0);
     }
 }

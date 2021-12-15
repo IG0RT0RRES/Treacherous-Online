@@ -4,7 +4,6 @@ using Photon.Pun;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] private PlayerMove _player_moviment;
     [SerializeField] private Shooting _shooting;
 
     public GameObject PrefabMorto;
@@ -117,10 +116,12 @@ public class PlayerHealth : MonoBehaviour
         _isDead = true;
         _playAudio.clip = DeadClip;
         _playAudio.Play();
-        CameraVisao.instance.transform.SetParent(UiManager.instance.GetPainel(7));
-        CamAuxio.instance.transform.SetParent(UiManager.instance.GetPainel(7));
+
+        Camera.main.GetComponentInChildren<CameraVisao>().transform.SetParent(UiManager.instance.Map);
+        CamAuxio.instance.transform.SetParent(UiManager.instance.Map);
+        
         CamAuxio.instance.enabled = false;
-        CameraVisao.instance.enabled = false;
+        Camera.main.GetComponentInChildren<CameraVisao>().enabled = false;
         UiManager.instance.Dead();
         _playerMove.enabled = false;
 

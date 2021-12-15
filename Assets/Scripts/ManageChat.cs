@@ -43,7 +43,7 @@ public class ManageChat : MonoBehaviour
         _mensageChatPrefab.GetComponent<MsgPrefab>().EnviarMensagem(Name, msg); // set a mensagem.
         GameObject _prefabMsg = Instantiate(_mensageChatPrefab); // instancia a mensagem .
         _prefabMsg.transform.SetParent(_layoutMsg, false); // seta como parente do containe de mensagens.
-        UiManager.instance.HidePainel(4,true);
+        //UiManager.instance.HidePainel(4,true);
         _scrollbar.value = 0; // desce o scrol da mensagem pra visualizar as novas mensagens recebidas.
     }
 

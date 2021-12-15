@@ -105,7 +105,7 @@ public class Shooting : MonoBehaviourPunCallbacks
 
             if (PHOTO != null)
             {
-                UiManager.instance.Damaged = true;
+                UiManager.instance.Damage = true;
                 PH.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, DamagePerShot, _shootHit.point, PHOTO.ViewID, _myname, _iDMatador);
             }
             else

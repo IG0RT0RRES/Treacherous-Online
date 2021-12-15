@@ -461,11 +461,11 @@ GameObject:
   - component: {fileID: 95282340804493418}
   - component: {fileID: 54021257052379348}
   - component: {fileID: 136597169910760762}
+  - component: {fileID: 114792284515492836}
+  - component: {fileID: 114089814464067048}
+  - component: {fileID: 114432035050520162}
   - component: {fileID: 114431056563196572}
   - component: {fileID: 114463992906250248}
-  - component: {fileID: 114792284515492836}
-  - component: {fileID: 114432035050520162}
-  - component: {fileID: 114089814464067048}
   m_Layer: 9
   m_Name: VanGuard
   m_TagString: Player
@@ -666,6 +666,85 @@ CapsuleCollider:
   m_Height: 1.748198
   m_Direction: 1
   m_Center: {x: 0.018432617, y: 0.8507967, z: 0}
+--- !u!114 &114792284515492836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119532556334958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 0
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 114432035050520162}
+  - {fileID: 114089814464067048}
+  sceneViewId: 0
+  InstantiationId: -1
+  isRuntimeInstantiated: 0
+--- !u!114 &114089814464067048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119532556334958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0
+--- !u!114 &114432035050520162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119532556334958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 0
+  ShowParameterInspector: 0
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 1
+    Name: X
+  - Type: 1
+    SynchronizeType: 1
+    Name: Y
+  - Type: 4
+    SynchronizeType: 1
+    Name: Running
+  - Type: 9
+    SynchronizeType: 1
+    Name: DesEquip
+  - Type: 9
+    SynchronizeType: 1
+    Name: Equip
+  - Type: 4
+    SynchronizeType: 0
+    Name: Jump
+  - Type: 9
+    SynchronizeType: 0
+    Name: Dead
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!114 &114431056563196572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,9 +787,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d4ca906ccdc934490b3f7fc87a9b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _photonView: {fileID: 0}
+  _photonView: {fileID: 114792284515492836}
   _useTransformView: 1
-  _rb: {fileID: 0}
+  _rb: {fileID: 54021257052379348}
   _forca: 65
   _tempodePulo: 0
   _podePular: 1
@@ -721,7 +800,7 @@ MonoBehaviour:
   _desEquipado: 1
   _shooting: {fileID: 114529057526333496}
   _playerHealth: {fileID: 114431056563196572}
-  Posicoes:
+  _posicoes:
   - {fileID: 1123596751359130}
   - {fileID: 1380995770891190}
   _referencias:
@@ -731,85 +810,6 @@ MonoBehaviour:
   - {fileID: 1356529180072220}
   - {fileID: 1913032930980026}
   - {fileID: 1680126040680814}
---- !u!114 &114792284515492836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119532556334958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 0
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 0
-  ObservedComponents:
-  - {fileID: 114432035050520162}
-  - {fileID: 114089814464067048}
-  sceneViewId: 0
-  InstantiationId: -1
-  isRuntimeInstantiated: 0
---- !u!114 &114432035050520162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119532556334958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 0
-  ShowParameterInspector: 0
-  m_SynchronizeParameters:
-  - Type: 1
-    SynchronizeType: 1
-    Name: X
-  - Type: 1
-    SynchronizeType: 1
-    Name: Y
-  - Type: 4
-    SynchronizeType: 1
-    Name: Running
-  - Type: 9
-    SynchronizeType: 1
-    Name: DesEquip
-  - Type: 9
-    SynchronizeType: 1
-    Name: Equip
-  - Type: 4
-    SynchronizeType: 0
-    Name: Jump
-  - Type: 9
-    SynchronizeType: 0
-    Name: Dead
-  m_SynchronizeLayers:
-  - SynchronizeType: 0
-    LayerIndex: 0
---- !u!114 &114089814464067048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119532556334958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 0
 --- !u!1 &1123596751359130
 GameObject:
   m_ObjectHideFlags: 0

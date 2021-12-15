@@ -60,7 +60,6 @@
     <Compile Include="Assets\ProCore\ProBuilder\API Examples\Procedural Mesh\ExtrudeRandomEdges.cs" />
     <Compile Include="Assets\ProCore\ProBuilder\API Examples\Runtime Editing\RuntimeEdit.cs" />
     <Compile Include="Assets\ProCore\ProBuilder\API Examples\Vertex Colors\HighlightNearestFace.cs" />
-    <Compile Include="Assets\Ragdoll\RagDollAtivo.cs" />
     <Compile Include="Assets\Scripts\CamAuxio.cs" />
     <Compile Include="Assets\Scripts\CameraAvancada.cs" />
     <Compile Include="Assets\Scripts\CameraVisao.cs" />
@@ -84,8 +83,9 @@
     <Compile Include="Assets\Scripts\PlayerC.cs" />
     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\PlayerMove.cs" />
+    <Compile Include="Assets\Scripts\PlayerSelection.cs" />
+    <Compile Include="Assets\Scripts\RagDollAtivo.cs" />
     <Compile Include="Assets\Scripts\SaveDados.cs" />
-    <Compile Include="Assets\Scripts\SelecaoDePlayers.cs" />
     <Compile Include="Assets\Scripts\Shooting.cs" />
     <Compile Include="Assets\Scripts\UiManager.cs" />
   </ItemGroup>
@@ -307,17 +307,11 @@
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.33f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\Variations\mono\Managed\UnityEngine.XRModule.dll</HintPath>
     </Reference>
-    <Reference Include="PhotonUnityNetworking.Utilities.PhotonPlayer.Editor">
-      <HintPath>Library\ScriptAssemblies\PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="PhotonUnityNetworking.Utilities.Culling.Editor">
-      <HintPath>Library\ScriptAssemblies\PhotonUnityNetworking.Utilities.Culling.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="PhotonUnityNetworking.Editor">
-      <HintPath>Library\ScriptAssemblies\PhotonUnityNetworking.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="PhotonUnityNetworking.Utilities.PhotonPlayer.Editor">
+      <HintPath>Library\ScriptAssemblies\PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
@@ -328,17 +322,23 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualStudio.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="PhotonUnityNetworking.Utilities.Culling.Editor">
+      <HintPath>Library\ScriptAssemblies\PhotonUnityNetworking.Utilities.Culling.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="PhotonUnityNetworking.Editor">
+      <HintPath>Library\ScriptAssemblies\PhotonUnityNetworking.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PlasticSCM.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
       <HintPath>Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll</HintPath>
@@ -716,6 +716,14 @@
       <Project>{0D426AA7-2772-C65B-DDD6-739164208516}</Project>
       <Name>PhotonUnityNetworking.Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="UnityEngine.UI.csproj">
+      <Project>{850D07C0-4191-4A13-0100-8F7E7685B4D2}</Project>
+      <Name>UnityEngine.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Timeline.csproj">
+      <Project>{E1BA0B1C-5F3F-4414-FE15-CB607A38B1A9}</Project>
+      <Name>Unity.Timeline</Name>
+    </ProjectReference>
     <ProjectReference Include="PhotonRealtime.csproj">
       <Project>{67E7E57D-6789-A5A0-04EC-E6578E0DB134}</Project>
       <Name>PhotonRealtime</Name>
@@ -727,14 +735,6 @@
     <ProjectReference Include="PhotonChat.csproj">
       <Project>{AAACAC31-4BEC-22AA-EB73-7BE8EC615FCD}</Project>
       <Name>PhotonChat</Name>
-    </ProjectReference>
-    <ProjectReference Include="UnityEngine.UI.csproj">
-      <Project>{850D07C0-4191-4A13-0100-8F7E7685B4D2}</Project>
-      <Name>UnityEngine.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.Timeline.csproj">
-      <Project>{E1BA0B1C-5F3F-4414-FE15-CB607A38B1A9}</Project>
-      <Name>Unity.Timeline</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.csproj">
       <Project>{8BFC14A7-6059-BF6B-4193-68178B3680B3}</Project>

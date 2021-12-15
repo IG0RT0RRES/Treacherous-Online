@@ -12,22 +12,32 @@ public class UiManager : MonoBehaviour
     [SerializeField] private ManageKills _manageKills;
     [SerializeField] private ManageMunicao _manageMunicao;
     [SerializeField] private LayoutPlayers _layoutPlayers;
-    [SerializeField] private SelecaoDePlayers _selecaoDePlayers;
+    [SerializeField] private PlayerSelection _playerSelection;
     [SerializeField] private PainelConfig _painelConfig;
     [Space(10)]
 
+    [SerializeField] private GameObject _painelCharacterChoice;
+    [SerializeField] private GameObject _painelRoomChoice;
     [SerializeField] private GameObject _painelSpawn;
+    [SerializeField] private GameObject _painelExit;
+    [SerializeField] private Transform _map;
     [Space(10)]
 
     [SerializeField] private bool _chat = false;
-    [SerializeField] private bool _sair = false;
+    [SerializeField] private bool _exit = false;
     [SerializeField] private bool _locked = false;
-    [SerializeField] private bool _damaged = false;
+    [SerializeField] private bool _damage = false;
     [Space(10)]
 
     [SerializeField] private Color _flashColor = new Color(1f, 0f, 0f, 0.3f);
     [SerializeField] private float _flashSpeed = 5f;
-    [SerializeField] private Image _miraImage;
+    [Space(10)]
+
+    [SerializeField] private Image _aimImage;
+    [SerializeField] private Image _damageImg;
+    [SerializeField] private Slider _lifeSlider;
+    [SerializeField] private Text _ammunitionTxt;
+    [SerializeField] private Camera _camUiConfig;
     [Space(10)]
 
     [SerializeField] private GameObject _positionPainel;
@@ -42,15 +52,60 @@ public class UiManager : MonoBehaviour
 
     #region Properties
 
+    public GameObject PainelExit
+    {
+        get { return _painelExit; }
+    }
+
+    public Transform Map
+    {
+        get { return _map; }
+    }
+
+    public GameObject PainelSpawn
+    {
+        get { return _painelSpawn; }
+    }
+
+    public GameObject PainelCharacter
+    {
+        get { return _painelCharacterChoice; }
+    }
+
+    public GameObject PainelRoom
+    {
+        get { return _painelRoomChoice; }
+    }
+
+    public Camera CameraUi
+    {
+        get { return _camUiConfig; }
+    }
+
+    public Text Ammunition
+    {
+        get { return _ammunitionTxt; }
+    }
+
+    public Slider Life
+    {
+        get { return _lifeSlider; }
+    }
+
+    public Image DamageSprite
+    {
+        get { return _damageImg; }
+    }
+
     public PainelConfig PainelConfigure
     {
         get { return _painelConfig; }
     }
 
-    public bool Damaged
+    public bool Damage
     {
-        get { return _damaged; }
-        set { _damaged = value; }
+        get { return _damage; }
+        set { _damage = value; }
     }
     public MangeLifePlayer MangeLifePlayer
     {
@@ -72,9 +127,9 @@ public class UiManager : MonoBehaviour
         get { return _manageMunicao; }
     }
 
-    public SelecaoDePlayers SelecaoDePlayers
+    public PlayerSelection PlayerSelection
     {
-        get { return _selecaoDePlayers; }
+        get { return _playerSelection; }
     }
 
     public LayoutPlayers LayoutPlayers
@@ -121,11 +176,20 @@ public class UiManager : MonoBehaviour
         _manageKills = FindObjectOfType(typeof(ManageKills)) as ManageKills;
         _manageMunicao = FindObjectOfType(typeof(ManageMunicao)) as ManageMunicao;
         _layoutPlayers = FindObjectOfType(typeof(LayoutPlayers)) as LayoutPlayers;
-        _selecaoDePlayers = FindObjectOfType(typeof(SelecaoDePlayers)) as SelecaoDePlayers;
+        _playerSelection = FindObjectOfType(typeof(PlayerSelection)) as PlayerSelection;
 
         _painelSpawn = GameObject.Find("PainelSpawn");
+        _damageImg = GameObject.Find("DamageImage").GetComponent<Image>();
+        _aimImage = GameObject.Find("HitEnemyImage").GetComponent<Image>();
+        _lifeSlider = GameObject.Find("LifePlayerSlider").GetComponent<Slider>();
+        _ammunitionTxt = GameObject.Find("AmmunitionText").GetComponent<Text>();
+        _camUiConfig = GameObject.Find("CamUiConfig").GetComponent<Camera>();
+        _painelExit = GameObject.Find("PainelExit");
+        _painelRoomChoice = GameObject.Find("PainelRoomChoice");
+        _painelCharacterChoice  = GameObject.Find("PainelCharacterChoice");
 
-        _miraImage = GameObject.Find("Hit_Enemy").GetComponent<Image>();
+        _map = GameObject.Find("Map_01").transform;
+
         _positionPainel = GameObject.Find("PositionPainel");
         _painelScore = GameObject.Find("PainelScore");
     }
@@ -135,6 +199,27 @@ public class UiManager : MonoBehaviour
         _manageChat.gameObject.SetActive(false); // esconde o chat.
         _chat = false;
         _painelSpawn.SetActive(false);
+        _painelExit.SetActive(false);
+    }
+
+    public void JoinedRoomApply()
+    {
+        _painelRoomChoice.SetActive(false);
+        _painelCharacterChoice.SetActive(true);
+    }
+
+    public void LeaveRoomApply()
+    {
+        _painelRoomChoice.SetActive(true);
+        _painelCharacterChoice.SetActive(false);
+
+        Camera.main.GetComponentInChildren<CameraVisao>().enabled = false;
+        Camera.main.transform.SetParent(_map.transform, false);
+        CamAuxio.instance.enabled = false;
+        CamAuxio.instance.transform.SetParent(_map.transform, false);
+        CamAuxio.instance.gameObject.SetActive(true);
+        _exit = false;
+        PhotonNetwork.LeaveRoom();
     }
 
     public void OnClickJoinRoom(string roomName)
@@ -149,16 +234,6 @@ public class UiManager : MonoBehaviour
         }
     }
 
-    public void HidePainel(int index, bool isEnable)
-    {
-        _painelConfig.Painels[index].SetActive(isEnable);
-    }
-
-    public Transform GetPainel(int index)
-    {
-        return _painelConfig.Painels[index].transform;
-    }
-
     private void Update()
     {
         _tempoMsg += Time.deltaTime;
@@ -170,16 +245,16 @@ public class UiManager : MonoBehaviour
             Lockmouse();
         }
 
-        if (_damaged)
+        if (_damage)
         {
-            _miraImage.color = _flashColor;
+            _aimImage.color = _flashColor;
         }
         else
         {
-            _miraImage.color = Color.Lerp(_miraImage.color, Color.clear, _flashSpeed * Time.deltaTime);
+            _aimImage.color = Color.Lerp(_aimImage.color, Color.clear, _flashSpeed * Time.deltaTime);
         }
 
-        _damaged = false;
+        _damage = false;
     }
 
     public void EnviarMensagens()
@@ -246,23 +321,23 @@ public class UiManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape) && !_chat)
         {
-            if (!_sair)
+            if (!_exit)
             {
                 Cursor.lockState = CursorLockMode.None;
-                _painelConfig.Painels[3].gameObject.SetActive(true);
-                _sair = true;
+                _painelExit.SetActive(true);
+                _exit = true;
             }
             else
             {
                 _locked = true;
-                _painelConfig.Painels[3].gameObject.SetActive(false);
-                _sair = false;
+                _painelExit.SetActive(false);
+                _exit = false;
             }
         }
 
         if (Input.GetKey(KeyCode.Tab))
         {
-            _painelScore.transform.position = _miraImage.transform.position;
+            _painelScore.transform.position = _aimImage.transform.position;
         }
         else
         {
@@ -278,11 +353,11 @@ public class UiManager : MonoBehaviour
 
     public void ApplayPersonagem()
     {
-        _personagemSeted = _selecaoDePlayers.txt_NamePerso.text;
+        _personagemSeted = _playerSelection.Name;
     }
 
     public void Dead()
     {
-        HidePainel(9, true);
+        _painelCharacterChoice.SetActive(true);
     }
 }

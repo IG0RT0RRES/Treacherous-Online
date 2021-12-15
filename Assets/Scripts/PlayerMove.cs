@@ -11,19 +11,17 @@ public class PlayerMove : MonoBehaviour, IPunObservable
     [SerializeField] private Rigidbody _rb;
     [Space(10)]
 
-    [SerializeField] private float _forca = 65;
-    [SerializeField] private float _tempodePulo = 0f;
-    [SerializeField] private bool _podePular = true;
+    [SerializeField] private float _force = 65;
+    [SerializeField] private float _timerJump = 0f;
+    [SerializeField] private bool _canJump = true;
     [SerializeField] private float _speed = 6f;
-    [SerializeField] private float _velrot = 100;
-    [SerializeField] private float _h = 2.0f;
-    [SerializeField] private bool _equipado = false;
-    [SerializeField] private bool _desEquipado = true;
+    [SerializeField] private bool _equip = false;
+    [SerializeField] private bool _unEquip = true;
     [SerializeField] private Shooting _shooting;
     [SerializeField] private PlayerHealth _playerHealth;
     [Space(10)]
 
-    [SerializeField] private GameObject[] Posicoes;
+    [SerializeField] private GameObject[] _posicoes;
     [SerializeField] private GameObject[] _referencias;
 
     private Vector3 _targetPosition;
@@ -62,18 +60,12 @@ public class PlayerMove : MonoBehaviour, IPunObservable
         _floorMask = LayerMask.GetMask("shootable");
         _anim = GetComponent<Animator>();
         _shooting.PlayerMove = this;
-
     }
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        UiManager.instance.HidePainel(3, false);
-
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    _photonView.RPC("TempoDeJogo", RpcTarget.MasterClient);
-        //}
+        UiManager.instance.PainelSpawn.SetActive(false);
     }
 
     private void SmothMove()
@@ -100,7 +92,7 @@ public class PlayerMove : MonoBehaviour, IPunObservable
 
     void MoverPlayer()
     {
-        _tempodePulo += Time.deltaTime;
+        _timerJump += Time.deltaTime;
 
         float _horizontal = Input.GetAxis("Horizontal") * _speed;
         float _vertical = Input.GetAxis("Vertical") * _speed;
@@ -109,45 +101,37 @@ public class PlayerMove : MonoBehaviour, IPunObservable
         
         _rb.transform.position += new Vector3(_horizontal, 0, _vertical);
 
-        _anim.SetFloat("X", Input.GetAxis("Horizontal"));
-        _anim.SetFloat("Y", Input.GetAxis("Vertical"));
-
+        //_anim.SetFloat("X", Input.GetAxis("Horizontal"));
+        //_anim.SetFloat("Y", Input.GetAxis("Vertical"));
+        
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (_equipado)
+            if (_equip)
             {
                 _photonView.RPC("DesEquipaArma", RpcTarget.OthersBuffered);
-                _anim.SetTrigger("DesEquip");
-                Posicoes[1].gameObject.SetActive(false);
-                Posicoes[0].gameObject.SetActive(true);
-                _equipado = false;
-                _desEquipado = true;
+                //_anim.SetTrigger("DesEquip");
+                _posicoes[1].gameObject.SetActive(false);
+                _posicoes[0].gameObject.SetActive(true);
+                _equip = false;
+                _unEquip = true;
 
             }
-            else if (_desEquipado)
+            else if (_unEquip)
             {
                 _photonView.RPC("EquipaArma", RpcTarget.OthersBuffered);
-                _anim.SetTrigger("Equip");
-                Posicoes[1].gameObject.SetActive(true);
-                Posicoes[0].gameObject.SetActive(false);
-                _desEquipado = false;
-                _equipado = true;
+                //_anim.SetTrigger("Equip");
+                _posicoes[1].gameObject.SetActive(true);
+                _posicoes[0].gameObject.SetActive(false);
+                _unEquip = false;
+                _equip = true;
             }
         }
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
-        {
-            _anim.SetBool("Running", true);
-        }
-        else
-        {
-            _anim.SetBool("Running", false);
-        }
 
-        if (Input.GetKeyDown(KeyCode.Space) && _podePular && _tempodePulo > 1f)
+        if (Input.GetKeyDown(KeyCode.Space) && _canJump && _timerJump > 1f)
         {
-            _rb.AddForce(Vector3.up * _forca, ForceMode.Impulse);
-            _tempodePulo = 0f;
-            _podePular = false;
+            _rb.AddForce(Vector3.up * _force, ForceMode.Impulse);
+            _timerJump = 0f;
+            _canJump = false;
         }
     }
 
@@ -155,12 +139,12 @@ public class PlayerMove : MonoBehaviour, IPunObservable
     {
         if (Physics.Linecast(transform.position, transform.position - Vector3.up, _floorMask))
         {
-            _podePular = true;
+            _canJump = true;
             Debug.DrawLine(transform.position, transform.position - Vector3.up, Color.green);
         }
         else if (!Physics.Linecast(transform.position, transform.position - Vector3.up, _floorMask))
         {
-            _podePular = false;
+            _canJump = false;
             Debug.DrawRay(transform.position, transform.TransformDirection(-Vector3.up) * 0.1f, Color.green);
         }
     }
@@ -202,16 +186,16 @@ public class PlayerMove : MonoBehaviour, IPunObservable
     [PunRPC]
     public void EquipaArma()
     {
-        _anim.SetTrigger("Equip");
-        Posicoes[1].gameObject.SetActive(true);
-        Posicoes[0].gameObject.SetActive(false);
+        //_anim.SetTrigger("Equip");
+        _posicoes[1].gameObject.SetActive(true);
+        _posicoes[0].gameObject.SetActive(false);
     }
     [PunRPC]
     public void DesEquipaArma()
     {
-        _anim.SetTrigger("DesEquip");
-        Posicoes[1].gameObject.SetActive(false);
-        Posicoes[0].gameObject.SetActive(true);
+        //_anim.SetTrigger("DesEquip");
+        _posicoes[1].gameObject.SetActive(false);
+        _posicoes[0].gameObject.SetActive(true);
     }
 
     [PunRPC]

@@ -60,7 +60,6 @@
     <Compile Include="Assets\ProCore\ProBuilder\API Examples\Procedural Mesh\ExtrudeRandomEdges.cs" />
     <Compile Include="Assets\ProCore\ProBuilder\API Examples\Runtime Editing\RuntimeEdit.cs" />
     <Compile Include="Assets\ProCore\ProBuilder\API Examples\Vertex Colors\HighlightNearestFace.cs" />
-    <Compile Include="Assets\Ragdoll\RagDollAtivo.cs" />
     <Compile Include="Assets\Scripts\CamAuxio.cs" />
     <Compile Include="Assets\Scripts\CameraAvancada.cs" />
     <Compile Include="Assets\Scripts\CameraVisao.cs" />
@@ -84,8 +83,9 @@
     <Compile Include="Assets\Scripts\PlayerC.cs" />
     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\PlayerMove.cs" />
+    <Compile Include="Assets\Scripts\PlayerSelection.cs" />
+    <Compile Include="Assets\Scripts\RagDollAtivo.cs" />
     <Compile Include="Assets\Scripts\SaveDados.cs" />
-    <Compile Include="Assets\Scripts\SelecaoDePlayers.cs" />
     <Compile Include="Assets\Scripts\Shooting.cs" />
     <Compile Include="Assets\Scripts\UiManager.cs" />
   </ItemGroup>
@@ -682,41 +682,21 @@
       <Project>{77041811-60DA-D8FF-ABAB-F62762FE169E}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
-    <ProjectReference Include="PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.csproj">
-      <Project>{26490102-2A45-169B-1840-8B72E092D295}</Project>
-      <Name>PhotonUnityNetworking.Utilities.PhotonPlayer.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonUnityNetworking.Utilities.csproj">
-      <Project>{0D426AA7-2772-C65B-DDD6-739164208516}</Project>
-      <Name>PhotonUnityNetworking.Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonRealtime.csproj">
-      <Project>{67E7E57D-6789-A5A0-04EC-E6578E0DB134}</Project>
-      <Name>PhotonRealtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonUnityNetworking.csproj">
-      <Project>{DB210EB1-8C46-57DC-BC8C-5F09D7FAC5DB}</Project>
-      <Name>PhotonUnityNetworking</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonChat.csproj">
-      <Project>{AAACAC31-4BEC-22AA-EB73-7BE8EC615FCD}</Project>
-      <Name>PhotonChat</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonUnityNetworking.Utilities.Culling.Editor.csproj">
-      <Project>{DBF3B374-9A84-52F7-3564-5558E18C0787}</Project>
-      <Name>PhotonUnityNetworking.Utilities.Culling.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonUnityNetworking.Editor.csproj">
-      <Project>{4C165088-5C6B-A86D-6A7C-8214C8F0713C}</Project>
-      <Name>PhotonUnityNetworking.Editor</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.Timeline.Editor.csproj">
       <Project>{A8DC924B-5DED-D9B7-49A8-CA94BE802FB0}</Project>
       <Name>Unity.Timeline.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.csproj">
+      <Project>{26490102-2A45-169B-1840-8B72E092D295}</Project>
+      <Name>PhotonUnityNetworking.Utilities.PhotonPlayer.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.VSCode.Editor.csproj">
       <Project>{732F9DEB-8C63-6B97-FDEC-ECE1AA6786BE}</Project>
       <Name>Unity.VSCode.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="PhotonUnityNetworking.Utilities.csproj">
+      <Project>{0D426AA7-2772-C65B-DDD6-739164208516}</Project>
+      <Name>PhotonUnityNetworking.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.Editor.csproj">
       <Project>{052A7A05-E972-1660-9CDB-9E06F47715DB}</Project>
@@ -730,17 +710,41 @@
       <Project>{E1BA0B1C-5F3F-4414-FE15-CB607A38B1A9}</Project>
       <Name>Unity.Timeline</Name>
     </ProjectReference>
+    <ProjectReference Include="PhotonRealtime.csproj">
+      <Project>{67E7E57D-6789-A5A0-04EC-E6578E0DB134}</Project>
+      <Name>PhotonRealtime</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.Rider.Editor.csproj">
       <Project>{FB1F8E31-1FA6-CC73-8F24-FEDC97E91905}</Project>
       <Name>Unity.Rider.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="PhotonUnityNetworking.csproj">
+      <Project>{DB210EB1-8C46-57DC-BC8C-5F09D7FAC5DB}</Project>
+      <Name>PhotonUnityNetworking</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.2D.Sprite.Editor.csproj">
+      <Project>{CB9235AD-7F52-A189-605C-7673CE0FF643}</Project>
+      <Name>Unity.2D.Sprite.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
       <Project>{058F1AF5-B977-8616-D995-1ACFDA4D0954}</Project>
       <Name>Unity.VisualStudio.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="PhotonChat.csproj">
+      <Project>{AAACAC31-4BEC-22AA-EB73-7BE8EC615FCD}</Project>
+      <Name>PhotonChat</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.csproj">
       <Project>{8BFC14A7-6059-BF6B-4193-68178B3680B3}</Project>
       <Name>Unity.TextMeshPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="PhotonUnityNetworking.Utilities.Culling.Editor.csproj">
+      <Project>{DBF3B374-9A84-52F7-3564-5558E18C0787}</Project>
+      <Name>PhotonUnityNetworking.Utilities.Culling.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="PhotonUnityNetworking.Editor.csproj">
+      <Project>{4C165088-5C6B-A86D-6A7C-8214C8F0713C}</Project>
+      <Name>PhotonUnityNetworking.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.PlasticSCM.Editor.csproj">
       <Project>{35A12414-9E98-9019-82CC-388C2D36D203}</Project>
@@ -749,10 +753,6 @@
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{0B11A5D8-A678-C1E9-A857-A46E4643BE51}</Project>
       <Name>UnityEditor.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.2D.Sprite.Editor.csproj">
-      <Project>{CB9235AD-7F52-A189-605C-7673CE0FF643}</Project>
-      <Name>Unity.2D.Sprite.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
